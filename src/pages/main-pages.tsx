@@ -5,12 +5,15 @@ import NavigationScreen from '../components/navigation.tsx';
 import HeaderDescriptionScreen from '../components/header-description-components.tsx';
 import SortComponentsScreen from '../components/sort-components.tsx';
 import OfferList from '../components/offer-list.tsx';
+import Map from '../components/map.tsx';
 import { CITIES } from '../const/const.ts';
 import { MainScreenProps } from '../types/type.ts';
 
 function MainScreen({ apartCount, email, offers }: MainScreenProps): JSX.Element {
-  const [activeOfferId] = useState<string | null>(null);
-  const [selectedCity] = useState<string>(CITIES[0]);
+  const [selectedCity, setSelectedCity] = useState<string>(CITIES[0]);
+
+
+  const cityOffers = offers.filter((offer) => offer.city === selectedCity);
 
   return (
     <>
@@ -20,19 +23,22 @@ function MainScreen({ apartCount, email, offers }: MainScreenProps): JSX.Element
           <title>6 cities</title>
         </Helmet>
         <h1 className="visually-hidden">Cities</h1>
-        <NavigationScreen />
+
+        {}
+        <NavigationScreen selectedCity={selectedCity} onCityChange={setSelectedCity} />
+
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <HeaderDescriptionScreen number={6} city={selectedCity} />
+              <HeaderDescriptionScreen number={cityOffers.length} city={selectedCity} />
               <SortComponentsScreen />
-              {}
-              <OfferList offers={offers} />
+              <OfferList offers={cityOffers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                {activeOfferId && <p>Active Offer ID: {activeOfferId}</p>}
+                {}
+                <Map offers={cityOffers} />
               </section>
             </div>
           </div>
